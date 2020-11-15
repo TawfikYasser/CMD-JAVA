@@ -1,6 +1,7 @@
 package major;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,6 +28,11 @@ public class Terminal {
 		
 		
 	}
+	
+	
+	
+	
+	
 	
 	public static void help() {
 
@@ -153,5 +159,97 @@ public class Terminal {
 		System.out.println(df.format(dateobj));
 	}
 	
+
+	
+    public void rm (String sourcepath)
+    {
+        File file=new File (sourcepath);
+        if (!file.delete())
+        {
+            System.out.println("File can't be deleted : ");
+        }
+        else
+            file.delete();
+    }
+    
+    
+    public void rmdir (String sourcepath)
+    {
+        File file=new File (sourcepath);
+        if (file.isDirectory())
+        {
+
+            /*
+             * If directory is empty, then delete it
+             */
+            if (file.list().length == 0)
+            {
+                file.delete();
+            }
+            else
+            {
+                // list all the directory contents
+                File files[] = file.listFiles();
+
+                for (File fileDelete : files)
+                {
+                    /*
+                     * Recursive delete
+                     */
+                    rmdir(fileDelete.getPath());
+                }
+
+                /*
+                 * check the directory again, if empty then
+                 * delete it.
+                 */
+                if (file.list().length == 0)
+                {
+                    file.delete();
+                }
+            }
+
+        }
+        else
+        {
+            /*
+             * if file, then delete it
+             */
+            file.delete();
+            System.out.println("File is deleted : " + file.getAbsolutePath());
+        }
+    }
+	
+    
+    public void pwd ()
+    {
+        File file1=new File(".");
+        File file2=new File("..");
+        try {
+            System.out.println("Current dir : " + file1.getCanonicalPath());
+            System.out.println("Parent  dir : " + file2.getCanonicalPath());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    
+    
+    //for redired***************************************
+    
+
+    public ArrayList pwdreturn ()
+    {
+        File file1=new File(".");
+        File file2=new File("..");
+        ArrayList <String> a1=new ArrayList<>();
+        try {
+            a1.add(file1.getCanonicalPath());
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return a1;
+    }
 	
 }

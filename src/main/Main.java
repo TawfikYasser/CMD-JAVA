@@ -20,9 +20,7 @@ public class Main {
 		    
 		    Parser parser = new Parser();
 		    validate = parser.parse(userInput);
-
+		    userInput = "";
 		}
-		
-	   
 	}	
 }

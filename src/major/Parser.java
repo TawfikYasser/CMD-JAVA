@@ -1,21 +1,28 @@
 package major;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 public class Parser {
-	public String cmd = "";
-	public String temp = "";
+	static int ff=0;
+	public static String cmd = "";
+	public static String temp = "";
+	public static String operatorCommand = "";
+	public static String operatorFilename="";
 	public static ArrayList<String> Args = new ArrayList<String>();
-	public ArrayList<String> commands = new ArrayList<String>();
-	public ArrayList<Integer> commandsArgs = new ArrayList<Integer>();
+	public static ArrayList<String> commands = new ArrayList<String>();
+	public static ArrayList<Integer> commandsArgs = new ArrayList<Integer>();
+	public static ArrayList<String> pipeCommands = new ArrayList<String>();
+
 	public boolean validate = false;
-	Terminal terminal;
-	
-	
-	public Parser(){
+	static Terminal terminal;
+
+	public Parser() {
+
+
 		terminal = new Terminal();
-		
+
 		commands.add("cd");
 		commands.add("ls");
 		commands.add("cp");
@@ -50,96 +57,237 @@ public class Parser {
 		commandsArgs.add(2);
 		commandsArgs.add(1);
 		commandsArgs.add(0);
-		
+
 	}
-	
-	
+
 	public boolean parse(String userInput) {
 
-		int i;
+		//1. Normal -> Done
+		//2. Pipe - > 
+		//3. > & >>
 		
-	    if(userInput != null){
-	    	
-	    	//First for loop - to get the command
-	        for(i = 0; i < userInput.length(); i++){
-	            if(!Character.isWhitespace(userInput.charAt(i))){
-	                cmd+=userInput.charAt(i);
-	                
-	            }else		
-	            	break;
-	            
-	            
-	        }
-	        
-	        
-	        //Second for loop - to get the args
-	        for(int j=i+1 ; j<userInput.length();j++) {
-	        	if(!Character.isWhitespace(userInput.charAt(j))){
-	        		temp+=userInput.charAt(j);
-	            }else { 
-	            	Args.add(temp);
-		        	temp = "";
-	            	
-	            }
-	        }
-	    }
 
-	    
+		if (userInput != null) {
 
-	    
-	    //Third for loop - to check the validation of the cmd and the no. of args
-	    for(int index=0; index<commands.size();index++) {
-	    	
-	    	int flag = 0;
-	    	
-	    	if(commands.get(index).equals(cmd)) {
-	    		//cmd is CORRECT	, Then check no. of Args?
-	    		flag = 1;
-	    		
-	    		if(commandsArgs.get(index).equals(Args.size())) {
-	    			//The number of args is CORRECT
-	    			
-	    			
-	    		    //Go to terminal 
-	    		    
-	    		    if(cmd.equals("mv")) {
-	    		    	terminal.mv(Args);
-	    		    }else if(cmd.equals("help")) {
-	    		    	terminal.help();
-	    		    }else if(cmd.equals("clear")) {
-	    		    	terminal.clear();
-	    		    }else if(cmd.equals("more")) {
-	    		    	try {
-							terminal.more(Args);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-	    		    }else if(cmd.equals("date")) {
-	    		    	terminal.date();
-	    		    }
-	    		    
-	    		    validate = true;
-	    			
-	    		}else {
-	    			
-	    			//The number of args is INCORRECT
-	    			System.out.println(cmd+": cannot stat '"+Args.get(0)+"': No such file or directory");
-	    			validate =  false;
+			
+			
+			if(userInput.contains("|")) {
+				ff = -1;
+				// pipe Case
+				userInput+="|";
+				for(int k = 0; k < userInput.length(); k++) {
+					  
+					
+					
+					if(userInput.charAt(k) != '|') {
+					  
+						operatorCommand+=userInput.charAt(k);
+					
+					}
+					else {
+						pipeCommands.add(operatorCommand);
+						operatorCommand = "";
+					}
+				}
+			
+				
+				//For
+				
+				for(int f = 0 ;f<pipeCommands.size();f++) {
+					String space  = pipeCommands.get(f);
+					if(space.charAt(0) == ' ') {
+						space = space.substring(1, space.length() - 1); 
+					}
+					checkAndAssign(space);
+					
+				}
+				
 
-	    		}
-	    			
-	    	}else if(index == commands.size() && flag == 0){
-	    		//cmd is INCORRECT
-	    			System.out.println("'"+cmd+"' is not recognized as an internal or external command, operable program or batch file.");
-	    			validate =  false;
-	    	} 	
-	    }
+				
+			}else if(userInput.contains(">")) {
+				// > Case
+				userInput+=">";
+				for(int k = 0; k < userInput.length(); k++) {
+					  
+					if(userInput.charAt(k) != '>')  {
+					  
+						operatorCommand+=userInput.charAt(k);
+					
+					}
+					else {
+						pipeCommands.add(operatorCommand);
+						operatorCommand = "";
+					}
+				}
+
+			operatorFilename = pipeCommands.get(1);	
+			
+			}else if(userInput.contains(">>")) {
+				// >> Case
+				
+				userInput+=">>";
+				for(int k = 0; k < userInput.length(); k++) {
+					  
+					if(userInput.charAt(k) == '>' && userInput.charAt(k+1) == '>')  {
+					  
+						pipeCommands.add(operatorCommand);
+						operatorCommand = "";
+					}
+					else {
+						
+						operatorCommand+=userInput.charAt(k);
+						
+						
+					}
+				}
+
+			operatorFilename = pipeCommands.get(1);	
+				
+			}else {
+				//Normal Case
+				checkAndAssign(userInput);
+			}
+			
+			
+
+			
+			
+			//checkAndAssign(userInput);
+
+			/*
+			 * //First for loop - to get the command for(i = 0; i < userInput.length();
+			 * i++){
+			 * 
+			 * if(!Character.isWhitespace(userInput.charAt(i))){ cmd+=userInput.charAt(i);
+			 * 
+			 * }else break; }
+			 * 
+			 * 
+			 * //Second for loop - to get the args for(int j=i+1 ; j<userInput.length();j++)
+			 * { if(!Character.isWhitespace(userInput.charAt(j))){
+			 * temp+=userInput.charAt(j); }else { Args.add(temp); temp = "";
+			 * 
+			 * } }
+			 */ }
+
+		/*
+		 * int flag = 0;
+		 * 
+		 * for(int y = 0; y < commands.size();y++) {
+		 * 
+		 * 
+		 * if(cmd.equals(commands.get(y))){
+		 * 
+		 * flag++;
+		 * 
+		 * if(Args.size() == commandsArgs.get(y)) {
+		 * 
+		 * flag++; } } }
+		 * 
+		 * if(flag == 0) { System.out.println("Invalid Command"); } else if(flag == 1) {
+		 * System.out.println("The arguments number is wrong"); } else {
+		 * 
+		 * if(cmd.equals("mv")) { terminal.mv(Args); }else if(cmd.equals("help")) {
+		 * terminal.help(); }else if(cmd.equals("clear")) { terminal.clear(); }else
+		 * if(cmd.equals("more")) { try { terminal.more(Args); } catch (IOException e)
+		 * {e.printStackTrace();} }else if(cmd.equals("date")) { terminal.date(); }
+		 * 
+		 * }
+		 */
+
+		
 		return validate;
-	    
 
-	   
-		
 	}
+
 	
+	
+	
+	
+	
+	//Normal Case -********************************************
+	public static void checkAndAssign(String userInput) {
+
+		
+			
+		
+		
+		int i;
+		// First for loop - to get the command
+		for (i = 0; i < userInput.length(); i++) {
+
+			if (!Character.isWhitespace(userInput.charAt(i))) {
+				cmd += userInput.charAt(i);
+
+			} else
+				break;
+		}
+
+		// Second for loop - to get the args
+		for (int j = i + 1; j < userInput.length(); j++) {
+			if (!Character.isWhitespace(userInput.charAt(j))) {
+				temp += userInput.charAt(j);
+			} else {
+				Args.add(temp);
+				temp = "";
+			}
+		}
+
+		callCommand();
+	}
+	// Normal Case callCommand
+	public static void callCommand() {
+
+
+		int flag = 0;
+
+		for (int y = 0; y < commands.size(); y++) {
+
+			if (cmd.equals(commands.get(y))) {
+
+				flag++;
+
+				if (Args.size() == commandsArgs.get(y)) {
+
+					flag++;
+				}
+			}
+		}
+	
+		if (flag == 0) {
+			System.out.println("Invalid Command");
+		} else if (flag == 1) {
+			System.out.println("The arguments number is wrong");
+		} else {
+
+			if (cmd.equals("mv")) {
+				
+				terminal.mv(Args);
+
+			} else if (cmd.equals("help")) {
+				terminal.help();
+			} else if (cmd.equals("clear")) {
+				terminal.clear();
+			} else if (cmd.equals("more")) {
+				try {
+					terminal.more(Args);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else if (cmd.equals("date")) {
+				terminal.date();
+			}else if(cmd.equals("pwd")) {
+				terminal.pwd();
+				
+			}else if(cmd.equals("rm")) {
+				terminal.rm(Args.get(0));
+			}else if(cmd.equals("rmdir")) {
+				terminal.rmdir(Args.get(0));
+			}
+
+			
+		}
+		cmd="";
+		Args.clear();
+	}
 }
