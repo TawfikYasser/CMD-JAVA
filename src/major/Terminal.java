@@ -16,23 +16,11 @@ import java.util.Date;
 
 public class Terminal {
 	
-	
-	public Terminal(ArrayList<String> pArgs) {
-		
-		
-		
-	}
-	
 	public Terminal() {
 		
 		
 		
 	}
-	
-	
-	
-	
-	
 	
 	public static void help() {
 
@@ -75,10 +63,11 @@ public class Terminal {
 	}
 	
 	public static void mv(ArrayList<String> mvArgs) {
+
+
 					
-			//Getting the current directory
-			Path currentRelativePath = Paths.get("");
-			String currentDirectory = currentRelativePath.toAbsolutePath().toString();
+		final String currentDirectory = System.getProperty("user.dir");
+        System.out.println("Current directory: " + currentDirectory);
 			
 			
 			
@@ -159,8 +148,6 @@ public class Terminal {
 		System.out.println(df.format(dateobj));
 	}
 	
-
-	
     public void rm (String sourcepath)
     {
         File file=new File (sourcepath);
@@ -171,7 +158,6 @@ public class Terminal {
         else
             file.delete();
     }
-    
     
     public void rmdir (String sourcepath)
     {
@@ -220,22 +206,117 @@ public class Terminal {
         }
     }
 	
-    
     public void pwd ()
+
     {
-        File file1=new File(".");
-        File file2=new File("..");
-        try {
-            System.out.println("Current dir : " + file1.getCanonicalPath());
-            System.out.println("Parent  dir : " + file2.getCanonicalPath());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    	
+    	 final String dir = System.getProperty("user.dir");
+         System.out.println("Current directory: " + dir);
+
     }
     
+	public void cd(String path) {
+
+
+		if(path.equals("..")) {
+			final String currentDirectory = System.getProperty("user.dir");
+	        System.out.println("Current directory: " + currentDirectory);
+			File f = new File(currentDirectory);
+			String changedPath = f.getAbsoluteFile().getParent();
+			System.setProperty("user.dir", changedPath.toString());
+			System.out.println(changedPath);
+		}else {
+			Path P = Paths.get(path);
+			if(Files.exists(P)) {
+				System.setProperty("user.dir", P.toString());
+			}else {
+				System.out.println("Not exists");
+
+			}
+		}
+
+		
+	}
+
+    public void ls() {
+
+		final String currentDirectory = System.getProperty("user.dir");
+        System.out.println("Current directory: " + currentDirectory);
+		File directory = new File(currentDirectory);
+		File[] subdirs = directory.listFiles();
+		for (File dir : subdirs) {
+			System.out.print(dir.getName()+"    ");
+		}
+		System.out.println("\n");
+    }
+
+	public void mkdir(String name) {
+		final String currentDirectory = System.getProperty("user.dir");
+        System.out.println("Current directory: " + currentDirectory);
+		Path p = Paths.get(currentDirectory+"\\"+name);
+	      File file = new File(p.toString());
+	      //Creating the directory
+	       file.mkdir();
+	       System.out.println("Success");
+	}
     
-    
-    //for redired***************************************
+	public void args(String commmand) {
+
+		if(commmand.equals("cd")) {
+			System.out.println("arg: Destination Directory");
+		}
+		else if(commmand.equals("ls")) {
+			System.out.println("Has no argument");
+		}
+		else if(commmand.equals("cp")) {
+			System.out.println("arg1: Source Directory, arg2: Destination Directory");
+		}
+		else if(commmand.equals("cat")) {
+			System.out.println("arg1: First File Name, arg2: Second File Name");
+		}
+		else if(commmand.equals("more")) {
+			System.out.println("arg: File Name");
+		}
+		else if(commmand.equals("|")) {
+			System.out.println("arg1: First Command, arg2: Second Command");
+		}
+		else if(commmand.equals(">")) {
+			System.out.println("arg1: Command, arg2: File Name or Path");
+		}
+		else if(commmand.equals(">>")) {
+			System.out.println("arg1: Command, arg2: File Name or Path");
+		}
+		else if(commmand.equals("mkdir")) {
+			System.out.println("arg: Directory Name");
+		}
+		else if(commmand.equals("rmdir")) {
+			System.out.println("arg: Directory Name");
+		}
+		else if(commmand.equals("mv")) {
+			System.out.println("arg1: Source File,    arg2: Destination File");
+		}
+		else if(commmand.equals("rm")) {
+			System.out.println("arg: File Name");
+		}
+		else if(commmand.equals("args")) {
+			System.out.println("arg: Command Name");
+		}
+		else if(commmand.equals("date")) {
+			System.out.println("Has no argument");
+		}
+		else if(commmand.equals("help")) {
+			System.out.println("Has no argument");
+		}
+		else if(commmand.equals("pwd")) {
+			System.out.println("Has no argument");
+		}
+		else if(commmand.equals("clear")) {
+			System.out.println("Has no argument");
+		}
+
+	}
+	
+	//For Redirect ***************************************
     
 
     public ArrayList pwdreturn ()

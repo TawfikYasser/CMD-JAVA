@@ -13,7 +13,7 @@ public class Main {
 			
 			System.out.println("Enter cmd: ");
 			userInput = scanner.nextLine();
-		    userInput = userInput.replaceAll("\\s+", " ");
+		    userInput = userInput.replaceAll("\\s+", "	 ");
 		    userInput+=" ";
 		    if(userInput.equals("exit"))
 		    	con = false;
