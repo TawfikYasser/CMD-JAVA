@@ -10,10 +10,11 @@ public class Main {
 		String userInput;
 		boolean con = true,validate = false;
 		while(con = true) {
-			
-			System.out.println("Enter cmd: ");
+			final String currentDirectory = System.getProperty("user.dir");
+
+			System.out.print(currentDirectory+">");
 			userInput = scanner.nextLine();
-		    userInput = userInput.replaceAll("\\s+", "	 ");
+		    userInput = userInput.replaceAll("\\s+", " ");
 		    userInput+=" ";
 		    if(userInput.equals("exit"))
 		    	con = false;

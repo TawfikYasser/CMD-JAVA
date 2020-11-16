@@ -93,7 +93,7 @@ public class Parser {
 					for(int f = 0 ;f<pipeCommands.size();f++) {
 						String space  = pipeCommands.get(f);
 						if(space.charAt(0) == ' ') {
-							space = space.substring(1, space.length() - 1); 
+							space = space.substring(1, space.length()); 
 						}
 						checkAndAssign(space);
 						
@@ -171,7 +171,8 @@ public class Parser {
 				temp = "";
 			}
 		}
-
+		
+		
 		callCommand();
 	}
 	// Normal Case callCommand

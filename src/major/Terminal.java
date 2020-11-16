@@ -67,7 +67,6 @@ public class Terminal {
 
 					
 		final String currentDirectory = System.getProperty("user.dir");
-        System.out.println("Current directory: " + currentDirectory);
 			
 			
 			
@@ -220,11 +219,11 @@ public class Terminal {
 
 		if(path.equals("..")) {
 			final String currentDirectory = System.getProperty("user.dir");
-	        System.out.println("Current directory: " + currentDirectory);
+	        //System.out.println("Current directory: " + currentDirectory);
 			File f = new File(currentDirectory);
 			String changedPath = f.getAbsoluteFile().getParent();
 			System.setProperty("user.dir", changedPath.toString());
-			System.out.println(changedPath);
+			//System.out.println(changedPath);
 		}else {
 			Path P = Paths.get(path);
 			if(Files.exists(P)) {
@@ -241,7 +240,6 @@ public class Terminal {
     public void ls() {
 
 		final String currentDirectory = System.getProperty("user.dir");
-        System.out.println("Current directory: " + currentDirectory);
 		File directory = new File(currentDirectory);
 		File[] subdirs = directory.listFiles();
 		for (File dir : subdirs) {
