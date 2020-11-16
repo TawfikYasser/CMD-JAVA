@@ -3,13 +3,17 @@ package major;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Parser {
 	static int ff=0;
+	static int z=0;
 	public static String cmd = "";
 	public static String temp = "";
 	public static String operatorCommand = "";
 	public static String operatorFilename="";
+	public static String fullInput = "";
 	public static ArrayList<String> Args = new ArrayList<String>();
 	public static ArrayList<String> commands = new ArrayList<String>();
 	public static ArrayList<Integer> commandsArgs = new ArrayList<Integer>();
@@ -64,6 +68,16 @@ public class Parser {
 
 		if (userInput != null) {
 
+			
+			for(int t=0;t<userInput.length();t++) {
+				
+				if(userInput.charAt(t)=='>') {
+					z++;
+				}
+				
+			}
+			
+			
 			if(userInput.contains("args")) {
 				checkAndAssign(userInput);
 			}else {
@@ -95,7 +109,8 @@ public class Parser {
 					}
 
 				
-			}else if(userInput.contains(">")) {
+			}else if(z==1) {
+				fullInput = userInput;
 				// > Case
 				userInput+=">";
 				for(int k = 0; k < userInput.length(); k++) {
@@ -111,18 +126,32 @@ public class Parser {
 					}
 				}
 
-			operatorFilename = pipeCommands.get(1); // file name 	
+				operatorFilename  = pipeCommands.get(1);
+				if(operatorFilename.charAt(0) == ' ') {
+					operatorFilename = operatorFilename.substring(1, operatorFilename.length()); 
+				}
+				
+				
 			
-			}else if(userInput.contains(">>")) {
+			
+			//Now you have the command in pipeCommands and the file name in operatorFilename
+			
+			checkAndAssign(pipeCommands.get(0)); // go to check and assign then call commands with the new functions
+			
+			
+			}
+			
+			else if(z==2) {
 				// >> Case
 				
 				userInput+=">>";
 				for(int k = 0; k < userInput.length(); k++) {
 					  
 					if(userInput.charAt(k) == '>' && userInput.charAt(k+1) == '>')  {
-					  
+						
 						pipeCommands.add(operatorCommand);
 						operatorCommand = "";
+						k++;
 					}
 					else {
 						
@@ -132,8 +161,19 @@ public class Parser {
 					}
 				}
 
-			operatorFilename = pipeCommands.get(1);	
+
+			operatorFilename  = pipeCommands.get(1);
+			String space = "";
+			for(int f = 0 ;f<pipeCommands.size();f++) {
+				 space  = pipeCommands.get(f);
+				if(space.charAt(0) == ' ') {
+					space = space.substring(1, space.length()); 
+				}
 				
+			}
+			operatorFilename  = space;
+			checkAndAssign(pipeCommands.get(0));
+
 			}else {
 				//Normal Case
 				checkAndAssign(userInput);
@@ -168,10 +208,10 @@ public class Parser {
 		}
 		
 		
-		callCommand();
+		callCommand(fullInput);
 	}
 	// Normal Case callCommand
-	public static void callCommand() {
+	public static void callCommand(String uI) {
 
 
 		int flag = 0;
@@ -189,47 +229,115 @@ public class Parser {
 			}
 		}
 	
+		
+
+		
+		
 		if (flag == 0) {
 			System.out.println("Invalid Command");
 		} else if (flag == 1) {
 			System.out.println("The arguments number is wrong");
 		} else {
+			
+			
+			if(z==1 ) {
 
-			if (cmd.equals("mv")) {
-				terminal.mv(Args);
-			} else if (cmd.equals("help")) {
-				terminal.help();
-			} else if (cmd.equals("clear")) {
-				terminal.clear();
-			} else if (cmd.equals("more")) {
-				try {
-					terminal.more(Args);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else if (cmd.equals("date")) {
-				terminal.date();
-			}else if(cmd.equals("pwd")) {
-				terminal.pwd();
-			}else if(cmd.equals("rm")) {
-				terminal.rm(Args.get(0));
-			}else if(cmd.equals("rmdir")) {
-				terminal.rmdir(Args.get(0));
-			}else if(cmd.equals("cd")) {
-				terminal.cd(Args.get(0));
-			}else if(cmd.equals("mkdir")) {
-				terminal.mkdir(Args.get(0));
-			}else if(cmd.equals("ls")) {
-				terminal.ls();
-			}else if(cmd.equals("args")) {
-				terminal.args(Args.get(0));
-			}else if(cmd.equals("cp")) {
-				terminal.cp(Args);
-			}else if(cmd.equals("cat")) {
-				terminal.cat(Args);
+				callReturnFunctions(Args,">");
+				
+				
 			}
+			
+			else if(z==2) {
+
+				callReturnFunctions(Args,">>");
+
+				
+			}else {
+
+				if (cmd.equals("mv")) {
+					terminal.mv(Args);
+				} else if (cmd.equals("help")) {
+					terminal.help();
+				} else if (cmd.equals("clear")) {
+					terminal.clear();
+				} else if (cmd.equals("more")) {
+					try {
+						terminal.more(Args);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else if (cmd.equals("date")) {
+					terminal.date();
+				}else if(cmd.equals("pwd")) {
+					terminal.pwd();
+				}else if(cmd.equals("rm")) {
+					terminal.rm(Args.get(0));
+				}else if(cmd.equals("rmdir")) {
+					terminal.rmdir(Args.get(0));
+				}else if(cmd.equals("cd")) {
+					terminal.cd(Args.get(0));
+				}else if(cmd.equals("mkdir")) {
+					terminal.mkdir(Args.get(0));
+				}else if(cmd.equals("ls")) {
+					terminal.ls();
+				}else if(cmd.equals("args")) {
+					terminal.args(Args.get(0));
+				}else if(cmd.equals("cp")) {
+					terminal.cp(Args);
+				}else if(cmd.equals("cat")) {
+					terminal.cat(Args);
+				}
+				
+			}
+			
 		}
 		cmd="";
 		Args.clear();
+	}
+	
+	public static void callReturnFunctions(ArrayList<String> rArgs,String operatorType) {
+		if (cmd.equals("mv")) {
+			terminal.mvReturn(rArgs, operatorFilename, operatorType);
+		} else if (cmd.equals("help")) {
+			terminal.helpReturn(operatorFilename, operatorType);
+		} else if (cmd.equals("clear")) {
+			terminal.clear();
+		} else if (cmd.equals("more")) {
+			try {
+				terminal.moreReturn(rArgs,operatorFilename,operatorType);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (cmd.equals("date")) {
+			terminal.dateReturn(operatorFilename, operatorType);
+		}else if(cmd.equals("pwd")) {
+			terminal.pwdReturn(operatorFilename, operatorType);
+		}else if(cmd.equals("rm")) {
+			terminal.rmReturn(rArgs, operatorFilename, operatorType);
+		}else if(cmd.equals("rmdir")) {
+			terminal.rmdirReturn(rArgs, operatorFilename, operatorType);
+		}else if(cmd.equals("cd")) {
+			terminal.cdReturn(rArgs, operatorFilename, operatorType);
+		}else if(cmd.equals("mkdir")) {
+			terminal.mkdirReturn(rArgs, operatorFilename, operatorType);
+		}else if(cmd.equals("ls")) {
+			terminal.lsReturn(operatorFilename, operatorType);
+		}else if(cmd.equals("args")) {
+			terminal.argsReturn(rArgs, operatorFilename, operatorType);
+		}else if(cmd.equals("cp")) {
+			terminal.cpReturn(rArgs, operatorFilename, operatorType);
+		}else if(cmd.equals("cat")) {
+			terminal.catReturn(rArgs, operatorFilename, operatorType);
+		}
+		
+		operatorFilename="";
+		rArgs.clear();
+		operatorType="";
+		cmd="";
+		Args.clear();
+		z=0;
+		pipeCommands.clear();
+		
 	}
 }
