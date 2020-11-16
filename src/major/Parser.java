@@ -73,21 +73,16 @@ public class Parser {
 				// pipe Case
 				userInput+="|";
 				for(int k = 0; k < userInput.length(); k++) {
-					  
-					
-					
+
 					if(userInput.charAt(k) != '|') {
 					  
 						operatorCommand+=userInput.charAt(k);
-					
 					}
 					else {
 						pipeCommands.add(operatorCommand);
 						operatorCommand = "";
 					}
 				}
-			
-
 					//For
 					
 					for(int f = 0 ;f<pipeCommands.size();f++) {
@@ -111,12 +106,12 @@ public class Parser {
 					
 					}
 					else {
-						pipeCommands.add(operatorCommand);
+						pipeCommands.add(operatorCommand); // array with one arg
 						operatorCommand = "";
 					}
 				}
 
-			operatorFilename = pipeCommands.get(1);	
+			operatorFilename = pipeCommands.get(1); // file name 	
 			
 			}else if(userInput.contains(">>")) {
 				// >> Case
@@ -228,6 +223,10 @@ public class Parser {
 				terminal.ls();
 			}else if(cmd.equals("args")) {
 				terminal.args(Args.get(0));
+			}else if(cmd.equals("cp")) {
+				terminal.cp(Args);
+			}else if(cmd.equals("cat")) {
+				terminal.cat(Args);
 			}
 		}
 		cmd="";

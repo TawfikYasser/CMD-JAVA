@@ -1,9 +1,11 @@
 package major;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +14,11 @@ import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.InputStream;
 import java.util.Date;
 
 public class Terminal {
@@ -45,6 +52,10 @@ public class Terminal {
 		System.out.println("pwd:    Display the current directory.");
 	}
 	
+
+	
+	
+	
 	public static void more(ArrayList<String> moreArgs) throws IOException {
 		
 		try {
@@ -60,6 +71,96 @@ public class Terminal {
 			e.printStackTrace();
 		}
 
+	}
+	
+	
+	public static void cp(ArrayList<String> cpArgs) {
+		
+		
+		final String currentDirectory = System.getProperty("user.dir");
+		//Setting the source and the destination
+		String sourceFile = currentDirectory+"\\"+cpArgs.get(0);
+		String targetPath = currentDirectory+"\\"+cpArgs.get(1);
+		//Check if source exists or not
+	    Path pathSource = Paths.get(sourceFile);
+	    Path pathDestination = Paths.get(targetPath);
+	    
+	    if(Files.exists(pathSource)) {
+	    	
+	    	
+	    	
+	    	//Check for destination exists
+	    	if(!Files.exists(pathDestination)) {
+	    		//Does not exists
+	    		
+	    		if(cpArgs.get(1).contains("txt")) { // File
+
+		    		File file = new File(pathDestination.toString());
+		    		
+		    		
+		    		try {
+		    			FileReader fr = new FileReader(pathSource.toString());
+		    			BufferedReader br = new BufferedReader(fr);
+		    			FileWriter fw = new FileWriter(cpArgs.get(1), true);
+		    			String s;
+		     
+		    			while ((s = br.readLine()) != null) { // read a line
+		    				fw.write(s); // write to output file
+		    				fw.flush();
+		    			}
+		    			br.close();
+		    			fw.close();
+		                            System.out.println("file copied");
+		    		} catch (IOException e) {
+		    			// TODO Auto-generated catch block
+		    			e.printStackTrace();
+		    		}
+	    		}else {
+	    			mkdir(cpArgs.get(1));
+	    			
+			    	Path s = Paths.get(sourceFile);
+					Path d = Paths.get(targetPath);
+					
+				    try {
+				    	
+						//Files.move(s, d.resolve(Paths.get(sourceFile).getFileName()));
+						Files.copy(s, d.resolve(Paths.get(sourceFile).getFileName()));
+						System.out.println("Source c to destination");
+
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
+	    		
+
+	    	}else {
+	    		//Exists
+	    		
+		    	Path s = Paths.get(sourceFile);
+				Path d = Paths.get(targetPath);
+				
+			    try {
+			    	
+					//Files.move(s, d.resolve(Paths.get(sourceFile).getFileName()));
+					Files.copy(s, d.resolve(Paths.get(sourceFile).getFileName()));
+					System.out.println("Source c to destination");
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+	    	
+	    	
+	    	
+	    }else {
+	    	System.out.println("Source file does not exists.");
+
+	    }
+	
+		
+		
 	}
 	
 	public static void mv(ArrayList<String> mvArgs) {
@@ -147,7 +248,7 @@ public class Terminal {
 		System.out.println(df.format(dateobj));
 	}
 	
-    public void rm (String sourcepath)
+    public static void rm (String sourcepath)
     {
         File file=new File (sourcepath);
         if (!file.delete())
@@ -158,7 +259,7 @@ public class Terminal {
             file.delete();
     }
     
-    public void rmdir (String sourcepath)
+    public static void rmdir (String sourcepath)
     {
         File file=new File (sourcepath);
         if (file.isDirectory())
@@ -205,7 +306,7 @@ public class Terminal {
         }
     }
 	
-    public void pwd ()
+    public static void pwd ()
 
     {
     	
@@ -214,7 +315,7 @@ public class Terminal {
 
     }
     
-	public void cd(String path) {
+	public static void cd(String path) {
 
 
 		if(path.equals("..")) {
@@ -237,7 +338,7 @@ public class Terminal {
 		
 	}
 
-    public void ls() {
+    public static void ls() {
 
 		final String currentDirectory = System.getProperty("user.dir");
 		File directory = new File(currentDirectory);
@@ -248,7 +349,7 @@ public class Terminal {
 		System.out.println("\n");
     }
 
-	public void mkdir(String name) {
+	public static void mkdir(String name) {
 		final String currentDirectory = System.getProperty("user.dir");
         System.out.println("Current directory: " + currentDirectory);
 		Path p = Paths.get(currentDirectory+"\\"+name);
@@ -258,7 +359,7 @@ public class Terminal {
 	       System.out.println("Success");
 	}
     
-	public void args(String commmand) {
+	public static void args(String commmand) {
 
 		if(commmand.equals("cd")) {
 			System.out.println("arg: Destination Directory");
@@ -312,7 +413,172 @@ public class Terminal {
 			System.out.println("Has no argument");
 		}
 
+		}
+	
+	
+	
+	
+
+	
+	
+	
+	public static void cat(ArrayList<String> catArgs) {
+		
+	
+		
+		
+		final String currentDirectory = System.getProperty("user.dir");
+		//Setting the source and the destination
+		String sourceFile = currentDirectory+"\\"+catArgs.get(0);
+		String targetPath = currentDirectory+"\\"+catArgs.get(1);
+		//Check if source exists or not
+	    Path pathSource = Paths.get(sourceFile);
+	    Path pathDestination = Paths.get(targetPath);
+	    
+	    
+	    
+	    if(Files.exists(pathSource)) {
+	    	
+	    	
+	    	if(Files.exists(pathDestination)) {
+	    		
+	    		
+	    		if(sourceFile.contains("txt")&&targetPath.contains("txt")) {
+
+		    		try {
+		    			BufferedReader in = new BufferedReader(new FileReader(sourceFile.toString()));
+		    			String line;
+		    			while((line = in.readLine()) != null)
+		    			{
+		    			    System.out.println(line);
+		    			}
+		    			in = new BufferedReader(new FileReader(targetPath.toString()));
+		    			while((line = in.readLine()) != null)
+		    			{
+		    			    System.out.println(line);
+		    			}
+		    			in.close();
+		    			
+		    		}catch (Exception e) {
+						// TODO: handle exception
+		    			e.printStackTrace();
+					}
+	    		}else if(sourceFile.contains("txt") && !targetPath.contains("txt")) {
+		    		try {
+		    			BufferedReader in = new BufferedReader(new FileReader(sourceFile.toString()));
+		    			String line;
+		    			while((line = in.readLine()) != null)
+		    			{
+		    			    System.out.println(line);
+		    			}
+		    			System.out.println("cat: "+targetPath+": Is a directory");
+		    			in.close();
+		    			
+		    		}catch (Exception e) {
+						// TODO: handle exception
+		    			e.printStackTrace();
+					}
+	    		}else if(!sourceFile.contains("txt") && targetPath.contains("txt")) {
+	    			System.out.println("cat: "+sourceFile+": Is a directory");
+
+		    		try {
+		    			BufferedReader in = new BufferedReader(new FileReader(targetPath.toString()));
+		    			String line;
+		    			while((line = in.readLine()) != null)
+		    			{
+		    			    System.out.println(line);
+		    			}
+		    			in.close();
+		    			
+		    		}catch (Exception e) {
+						// TODO: handle exception
+		    			e.printStackTrace();
+					}
+	    		}else {
+	    			System.out.println("cat: "+sourceFile+": Is a directory");
+	    			System.out.println("cat: "+targetPath+": Is a directory");
+
+	    		}
+	    			
+	    	}else {
+	    		//Destination not found
+	    		if(sourceFile.contains("txt")) {
+	    			
+	        		try {
+		    			BufferedReader in = new BufferedReader(new FileReader(sourceFile.toString()));
+		    			String line;
+		    			while((line = in.readLine()) != null)
+		    			{
+		    			    System.out.println(line);
+		    			}
+		    			System.out.println("cat: "+targetPath+": No such file or directory");
+		    			in.close();
+		    			
+		    		}catch (Exception e) {
+						// TODO: handle exception
+		    			e.printStackTrace();
+					}
+	    			
+	    		}else {
+	    			System.out.println("cat: "+sourceFile+": Is a directory");
+
+	    			System.out.println("cat: "+targetPath+": No such file or directory");
+
+	    
+	    		}
+	    			
+	    	}
+	    	
+	    	
+	    }else {
+	    	
+	    	//source not found
+	    	
+	    	if(Files.exists(pathDestination)) {
+	    		
+	    		if(targetPath.contains("txt")) {
+	    			System.out.println("cat: "+sourceFile+": No such file or directory");
+
+	        		try {
+		    			BufferedReader in = new BufferedReader(new FileReader(targetPath.toString()));
+		    			String line;
+		    			while((line = in.readLine()) != null)
+		    			{
+		    			    System.out.println(line);
+		    			}
+		    			in.close();
+		    			
+		    		}catch (Exception e) {
+						// TODO: handle exception
+		    			e.printStackTrace();
+					}
+	    		}else {
+	    			
+	    			System.out.println("cat: "+targetPath+": Is a directory");
+
+	    			System.out.println("cat: "+sourceFile+": No such file or directory");
+
+	    			
+	    		}
+	    		
+	    	}else {
+	    		
+    			System.out.println("cat: "+sourceFile+": No such file or directory");
+    			System.out.println("cat: "+targetPath+": No such file or directory");
+
+	    		
+	    	}
+	    	
+	    	
+	    	
+	    }
 	}
+	
+	
+	
+	
+	
+	
 	
 	//For Redirect ***************************************
     
