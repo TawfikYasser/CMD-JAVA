@@ -4,6 +4,7 @@ import java.util.Scanner;
 import main.*;
 
 public class Main {
+	
 	public static Parser parser = new Parser();
 
 	public static void main(String[] args) {
@@ -12,7 +13,6 @@ public class Main {
 		boolean con = true,validate = false;
 		while(con = true) {
 			final String currentDirectory = System.getProperty("user.dir");
-
 			System.out.print(currentDirectory+">");
 			userInput = scanner.nextLine();
 		    userInput = userInput.replaceAll("\\s+", " ");
@@ -20,12 +20,9 @@ public class Main {
 		    if(userInput.equals("exit"))
 		    	con = false;
 		    
-		    
 		    validate = parser.parse(userInput);
 		    userInput = "";
 		}
-		
-		
-		
+
 	}	
 }

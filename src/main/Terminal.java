@@ -31,27 +31,6 @@ public class Terminal {
 	
 	public static void help() {
 
-		
-		ArrayList<String> helpData = new ArrayList<String>();
-		helpData.add("For more information on a specific command, type args <command-name>"+"\n");
-		helpData.add("cd:     Displays the name of or changes the current directory.");
-		helpData.add("ls:     List information about the FILEs (the current directory by default).");
-		helpData.add("cp:     Copies one or more files to another location.");
-		helpData.add("cat:    Concatenate files and print on the standard output.");
-		helpData.add("more:   Displays output one screen at a time.");
-		helpData.add("pipe:   Use pipes “ | “ to redirect the output of the previous command as in input to another command.");
-		helpData.add("mkdir:  Creates a directory with each given name.");
-		helpData.add("rmdir:  Removes a directory with each given name.");
-		helpData.add("mv:     Moves one or more files from one directory to another directory.");
-		helpData.add(">:      Redirect the output to be written to a file using the redirect > create/replace file operator.");
-		helpData.add(">>:     Redirect the output to be written to a file using the redirect >> create/append to file operator.");
-		helpData.add("args:   List all parameters on the command line, numbers or strings for specific command.");
-		helpData.add("date:   Diplay current date/time.");
-		helpData.add("help:   Display all user commands with their definition.");
-		helpData.add("pwd:    Display the current directory.");
-		
-		
-		
 		System.out.println("For more information on a specific command, type args <command-name>"+"\n");
 		System.out.println("cd:     Displays the name of or changes the current directory.");
 		System.out.println("ls:     List information about the FILEs (the current directory by default).");
@@ -327,7 +306,7 @@ public class Terminal {
              * if file, then delete it
              */
             file.delete();
-            System.out.println("File is deleted : " + file.getAbsolutePath());
+            System.out.println("File is deleted.");
         }
     }
 	
@@ -393,7 +372,6 @@ public class Terminal {
 
 	public static void mkdir(String name) {
 		final String currentDirectory = System.getProperty("user.dir");
-        System.out.println("Current directory: " + currentDirectory);
 		Path p = Paths.get(currentDirectory+"\\"+name);
 	      File file = new File(p.toString());
 	      //Creating the directory
@@ -609,7 +587,7 @@ public class Terminal {
 	    }
 	}
 	
-	//>
+	 //>
 	 public static void OP (String filpath, ArrayList <String> content)
 
 	    {
@@ -1230,13 +1208,8 @@ public class Terminal {
 		}
 	}
     	
-    public static void pwdReturn (String filename,String opType)
-
-
-
-    {
+    public static void pwdReturn (String filename,String opType){
 		ArrayList<String> ouputArray = new ArrayList<String>();
-
     	 final String dir = System.getProperty("user.dir");
  	     ouputArray.add(dir);
 	    
@@ -1251,10 +1224,7 @@ public class Terminal {
  		
     }
    
-    public static void helpReturn(String filename,String opType) {
-
-
-		
+    public static void helpReturn(String filename,String opType) {	
 		ArrayList<String> helpData = new ArrayList<String>();
 		helpData.add("For more information on a specific command, type args <command-name>"+"\n");
 		helpData.add("cd:     Displays the name of or changes the current directory.");
@@ -1282,11 +1252,7 @@ public class Terminal {
 	}
 	
 	public static void argsReturn(ArrayList<String> commandArgs,String filename,String opType) {
-
-
 		ArrayList<String> ouputArray = new ArrayList<String>();
-
-		
 		ouputArray.add("cd      ->      arg: Destination Directory");
 		ouputArray.add("ls      ->      Has no argument");
 		ouputArray.add("cp      ->      arg1: Source Directory, arg2: Destination Directory");
@@ -1304,8 +1270,6 @@ public class Terminal {
 		ouputArray.add("help    ->  	Has no argument");
 		ouputArray.add("pwd     ->   	Has no argument");
 		ouputArray.add("clear   -> 		Has no argument");
-
-		
 		if(opType.equals(">")) {
  			OP(filename, ouputArray);
  		}else {
@@ -1313,8 +1277,6 @@ public class Terminal {
  		}
 
 	}
-	
-	
 	
 	public static void exit() {
 		System.exit(0);

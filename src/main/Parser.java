@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 import main.*;
 public class Parser {
+	
+	
 	static int ff=0;
 	static int z=0;
 	public static String cmd = "";
@@ -46,7 +48,7 @@ public class Parser {
 		commandsArgs.add(2);
 		commandsArgs.add(1);
 		commandsArgs.add(0);
-		commandsArgs.add(0); // pipe ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		commandsArgs.add(0); 
 		commandsArgs.add(1);
 		commandsArgs.add(1);
 		commandsArgs.add(1);
@@ -64,7 +66,6 @@ public class Parser {
 	public boolean parse(String userInput) {
 
 		if (userInput != null) {
-
 			
 			for(int t=0;t<userInput.length();t++) {
 				
@@ -94,7 +95,6 @@ public class Parser {
 						operatorCommand = "";
 					}
 				}
-					//For
 					
 					for(int f = 0 ;f<pipeCommands.size();f++) {
 						String space  = pipeCommands.get(f);
@@ -107,8 +107,8 @@ public class Parser {
 
 				
 			}else if(z==1) {
-				fullInput = userInput;
 				// > Case
+				fullInput = userInput;
 				userInput+=">";
 				for(int k = 0; k < userInput.length(); k++) {
 					  
@@ -127,20 +127,11 @@ public class Parser {
 				if(operatorFilename.charAt(0) == ' ') {
 					operatorFilename = operatorFilename.substring(1, operatorFilename.length()); 
 				}
-				
-				
-			
-			
-			//Now you have the command in pipeCommands and the file name in operatorFilename
-			
-			checkAndAssign(pipeCommands.get(0)); // go to check and assign then call commands with the new functions
-			
-			
+					checkAndAssign(pipeCommands.get(0));			
 			}
 			
 			else if(z==2) {
 				// >> Case
-				
 				userInput+=">>";
 				for(int k = 0; k < userInput.length(); k++) {
 					  
@@ -152,13 +143,9 @@ public class Parser {
 					}
 					else {
 						
-						operatorCommand+=userInput.charAt(k);
-						
-						
+						operatorCommand+=userInput.charAt(k);	
 					}
 				}
-
-
 			operatorFilename  = pipeCommands.get(1);
 			String space = "";
 			for(int f = 0 ;f<pipeCommands.size();f++) {
@@ -181,7 +168,6 @@ public class Parser {
 		return validate;
 	}
 
-	//Normal Case -********************************************
 	public static void checkAndAssign(String userInput) {	
 		int i;
 		// First for loop - to get the command
@@ -207,7 +193,7 @@ public class Parser {
 		
 		callCommand(fullInput);
 	}
-	// Normal Case callCommand
+	
 	public static void callCommand(String uI) {
 
 
@@ -238,17 +224,11 @@ public class Parser {
 			
 			
 			if(z==1 ) {
-
-				callReturnFunctions(Args,">");
-				
-				
+				callReturnFunctions(Args,">");	
 			}
 			
 			else if(z==2) {
-
-				callReturnFunctions(Args,">>");
-
-				
+				callReturnFunctions(Args,">>");	
 			}else {
 
 				if (cmd.equals("mv")) {
