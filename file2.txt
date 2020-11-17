@@ -1,0 +1,19 @@
+filedata
+
+For more information on a specific command, type args <command-name>
+ 
+cd:     Displays the name of or changes the current directory. 
+ls:     List information about the FILEs (the current directory by default). 
+cp:     Copies one or more files to another location. 
+cat:    Concatenate files and print on the standard output. 
+more:   Displays output one screen at a time. 
+pipe:   Use pipes “ | “ to redirect the output of the previous command as in input to another command. 
+mkdir:  Creates a directory with each given name. 
+rmdir:  Removes a directory with each given name. 
+mv:     Moves one or more files from one directory to another directory. 
+>:      Redirect the output to be written to a file using the redirect > create/replace file operator. 
+>>:     Redirect the output to be written to a file using the redirect >> create/append to file operator. 
+args:   List all parameters on the command line, numbers or strings for specific command. 
+date:   Diplay current date/time. 
+help:   Display all user commands with their definition. 
+pwd:    Display the current directory. 

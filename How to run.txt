@@ -1,0 +1,5 @@
+1. Go to the package
+2. Compile the 3 classes :
+   EX: javac Main.java Terminal.java Parser.java
+3. Go back 2 steps out of src
+4. Type: java -cp ./src;. main.Main

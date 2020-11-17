@@ -1,9 +1,10 @@
 package main;
 
-import major.Parser;
 import java.util.Scanner;
+import main.*;
 
 public class Main {
+	public static Parser parser = new Parser();
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -19,7 +20,7 @@ public class Main {
 		    if(userInput.equals("exit"))
 		    	con = false;
 		    
-		    Parser parser = new Parser();
+		    
 		    validate = parser.parse(userInput);
 		    userInput = "";
 		}
