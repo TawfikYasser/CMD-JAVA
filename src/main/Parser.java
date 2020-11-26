@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,6 +25,7 @@ public class Parser {
 	public static Terminal terminal= new Terminal();
 
 	public Parser() {
+
 		commands.add("cd");
 		commands.add("ls");
 		commands.add("cp");
@@ -64,6 +66,7 @@ public class Parser {
 	}
 
 	public boolean parse(String userInput) {
+
 
 		if (userInput != null) {
 			
@@ -168,7 +171,8 @@ public class Parser {
 		return validate;
 	}
 
-	public static void checkAndAssign(String userInput) {	
+	public static void checkAndAssign(String userInput) {
+
 		int i;
 		// First for loop - to get the command
 		for (i = 0; i < userInput.length(); i++) {

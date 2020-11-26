@@ -23,11 +23,7 @@ import java.util.Date;
 
 public class Terminal {
 	
-	public Terminal() {
-		
-		
-		
-	}
+	public Terminal() {}
 	
 	public static void help() {
 
@@ -51,6 +47,7 @@ public class Terminal {
 	}
 	
 	public static void more(ArrayList<String> moreArgs) throws IOException {
+
 		
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(moreArgs.get(0)));
@@ -145,8 +142,6 @@ public class Terminal {
 					e.printStackTrace();
 				}
 	    	}
-	    	
-	    	
 	    	
 	    }else {
 	    	System.out.println("Source file does not exists.");
@@ -373,10 +368,10 @@ public class Terminal {
 	public static void mkdir(String name) {
 		final String currentDirectory = System.getProperty("user.dir");
 		Path p = Paths.get(currentDirectory+"\\"+name);
-	      File file = new File(p.toString());
-	      //Creating the directory
-	       file.mkdir();
-	       System.out.println("Success");
+	    File file = new File(p.toString());
+	    //Creating the directory
+	    file.mkdir();
+	    System.out.println("Success");
 	}
     
 	public static void args(String commmand) {
@@ -436,9 +431,6 @@ public class Terminal {
 	}
 	
 	public static void cat(ArrayList<String> catArgs) {
-		
-	
-		
 		
 		final String currentDirectory = System.getProperty("user.dir");
 		//Setting the source and the destination
@@ -587,7 +579,7 @@ public class Terminal {
 	    }
 	}
 	
-	 //>
+	 // >
 	 public static void OP (String filpath, ArrayList <String> content)
 
 	    {
@@ -629,8 +621,9 @@ public class Terminal {
 	        }
 	    }
 
-	 //>>
+	 // >>
 	 public static void OPOP (String filepath,ArrayList <String> content)
+
 
 	    {
 	        try {
@@ -653,6 +646,11 @@ public class Terminal {
 	        }
 	    }
 	
+	 	
+	 public static void exit() {
+			System.exit(0);
+		}
+		
 	
 	//For Redirect Operators ***************************************
    
@@ -1277,9 +1275,5 @@ public class Terminal {
  		}
 
 	}
-	
-	public static void exit() {
-		System.exit(0);
-	}
-	
+
 }
